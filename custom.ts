@@ -60,7 +60,7 @@ namespace IP_NETWORK {
  
     
 
-    //%block="グループ番号$nでデバイスのIPアドレスを192.168.0.$xにする"
+    //%block="グループ番号$nでデバイスのIPアドレスを$xにする"
     //%weight=100
     //% group="LAN"
     //% n.min=1 n.max=99 n.defl=1
@@ -162,12 +162,12 @@ export function　rep(t : string ="OK"):void{
 
 
      /**
-     * TODO:自分のipアドレス（192.168.0.X形式)で表示
+     * TODO:自分のipアドレスを表示
    　
      */
     //%weight=90
     //% group="LAN"
-    //% block="自分のIPアドレスの192.168.0.〇に設定した数字を表示"
+    //% block="自分のIPアドレスに設定した数字を表示"
     export function myip():void{
         if(myipaddress < 10){basic.showNumber(myipaddress)
 
@@ -333,7 +333,7 @@ export function　rep(t : string ="OK"):void{
     //% DATA.defl=receivedtext
     //% s.defl=1 s.min=1 s.max=19
     //% draggableParameters="reporter"
-     //% block="192.168.0.$s に登録されている $n　番目のデータをリクエスト"
+     //% block="IPアドレス$s に登録されている $n　番目のデータをリクエスト"
     export function askdataip(n:lis,s:number):void　{ 
         radio.sendNumber(s)
         makestring =""+ convertToText(myipaddress)+"REQUESTDATA:"+""+ convertToText(n);
@@ -354,15 +354,15 @@ export function　rep(t : string ="OK"):void{
 
 
      /**
-     * TODO:受信した相手のIPアドレス（192.168.0.X形式）
+     * TODO:受信した相手のIPアドレス
    　
      */
     //%weight=75
     //% group="LAN"
-    //% block="受信した相手のIPアドレスの情報（192.168.0.X形式）"
+    //% block="受信した相手のIPアドレスの情報"
     export function receivedip():string　{ 
         let fromip = ""
-        fromip = "192.168.0."+""+receivedfromip
+        fromip = receivedfromip
         return fromip
 
     }
@@ -374,7 +374,7 @@ export function　rep(t : string ="OK"):void{
      */
     //%weight=80
     //% group="LAN"
-    //% block="192.168.0.　$nにメッセージ $y　(１７文字までの英数字)を送信"
+    //% block="相手のIPアドレス　$nにメッセージ $y　(１７文字までの英数字)を送信"
     //% n.min=1 n.max=99 n.defl=1
     export function sendmessege(n:number,y:string ):void{
         radio.sendNumber(n)
@@ -608,7 +608,7 @@ export function　rep(t : string ="OK"):void{
         let receivedmessage:string;
 
        
-        receivedmessage = "192.168.0."+""+receivedfromip+" to "+"192.168.0."+""+convertToText(receivedtoip)+" "+""+receivedtext;
+        receivedmessage = ""+receivedfromip+" to "+""+convertToText(receivedtoip)+" "+""+receivedtext;
 
         return receivedmessage;
         
@@ -626,7 +626,7 @@ export function　rep(t : string ="OK"):void{
     //% block="IPアドレス+メッセージの内容の文字列をシリアル通信で出力"
     export function  messagetoserial():void　{ 
        let receivedmessage:string;
-       receivedmessage = "|===192.168.0."+""+receivedfromip+"===|===192.168.0."+""+convertToText(receivedtoip)+"==|"+"==="+""+receivedtext+"===|";
+       receivedmessage = "|===.........."+""+receivedfromip+"===|===..........."+""+convertToText(receivedtoip)+"==|"+"==="+""+receivedtext+"===|";
        
         serial.writeLine("RECEIVED!"); 
           serial.writeLine("|.....[FROM]......|......[TO]......|......[MESSAGE].....|");
